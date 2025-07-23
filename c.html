@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <title>PANDA Framework</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            /*font-family: system-ui, -apple-system, sans-serif;*/
+        }
+
+        body {
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            font-family: 'Noto Sans', sans-serif;
+            padding-top: 50px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            
+        }
+
+        .title {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            line-height: 1.2;
+            font-family: 'Google Sans', sans-serif;
+            padding-top: 10px;
+        }
+
+        .authors {
+            color: #2563eb;
+            text-decoration: none; /* Remove underline */
+            transition: color 0.3s ease;
+            margin-bottom: 10px;
+            font-family: 'Google Sans', sans-serif;
+            font-size: 20px;
+        }
+
+
+        .authors a,
+        .authors a:link,
+        .authors a:visited {
+            color: #2563eb;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .authors a:hover,
+        .authors a:active {
+            color: #1e40af;
+            text-decoration: none;
+        }
+
+        .comma {
+            color: black;
+        }
+
+        .institution {
+            margin-bottom: 20px;
+            font-family: 'Google Sans', sans-serif;
+            font-size: 18px;
+            font-weight: bold
+        }
+
+        .conference {
+            margin-bottom: 30px;
+            font-family: 'Google Sans', sans-serif;
+            font-size: 18px;
+            font-weight: bold
+        }
+
+        .equal-contrib {
+            font-size: 14px;
+            font-weight: bold
+        }
+
+        .buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 40px;
+        }
+
+        .button {
+            padding: 9px 24px;
+            border-radius: 30px;
+            border: none;
+            background: #1f2937;
+            color: white;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 16px;
+            transition: background-color 0.2s;
+            text-decoration: none; /* This removes the underline from link-buttons */
+        }
+
+        .button:hover {
+            background: #374151;
+        }
+
+        .button i {
+            font-size: 18px;
+        }
+
+
+        .section-title {
+            font-size: 2rem;
+            margin: 40px 0 20px;
+            text-align: center;
+        }
+
+        .abstract, .method, .results{
+            margin-bottom: 40px;
+            padding: 0 10%;
+            text-align: justify;
+        }
+
+        /* Carousel Styles */
+        .carousel-container {
+            position: relative;
+            max-width: 100%;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+
+        .carousel {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .carousel-item {
+            min-width: 100%;
+            box-sizing: border-box;
+        }
+
+        .carousel-item img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .carousel-button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(229, 231, 235, 0.8); /* Light grey with opacity */
+            border: none;
+            padding: 16px;
+            cursor: pointer;
+            border-radius: 50%;
+            font-size: 18px;
+            transition: all 0.3s ease;
+            color: #4B5563; /* Dark grey text color */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+        }
+
+        .carousel-button:hover {
+            background: rgba(209, 213, 219, 0.9); /* Slightly darker on hover */
+            transform: translateY(-50%) scale(1.05); /* Slight scale effect on hover */
+        }
+
+        .carousel-button:active {
+            background: rgba(156, 163, 175, 0.9); /* Even darker when clicked */
+            transform: translateY(-50%) scale(0.95); /* Slight press effect */
+        }
+
+        .prev-button {
+            left: 10px;
+        }
+
+        .next-button {
+            right: 10px;
+        }
+
+        /* Dot Navigation Styles */
+        .dot-navigation {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .dot {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: #bbb;
+            margin: 0 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .dot.active {
+            background-color: #333;
+        }
+
+        /* Slider Dots Styles */
+        .slider-dots {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .slider-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.5);
+            margin: 0 4px;
+            transition: all 0.3s ease;
+        }
+
+        .slider-dot.active {
+            background-color: #fff;
+            transform: scale(1.5);
+        }
+
+        .footer {
+            margin-top: 60px;
+            text-align: center;
+            padding: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        @media (max-width: 768px) {
+            .title {
+                font-size: 1.8rem;
+            }
+            
+            .buttons {
+                flex-wrap: wrap;
+            }
+        }
+
+        table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      font-size: 14px;
+      text-align: center;
+    }
+
+    th, td {
+      padding: 10px;
+      border: 1px solid #ddd;
+    }
+
+    th {
+      background-color: #f4f4f4;
+      font-weight: bold;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+
+    tr:hover {
+      background-color: #f1f1f1;
+    }
+
+    caption {
+      caption-side: top;
+      font-size: 16px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .arrow {
+      font-size: 12px;
+      color: #666;
+    }
+
+    .image-container {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      margin-bottom: 10px;
+    }
+
+    .image-wrapper {
+      margin: 0 10px;
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    .image-wrapper img {
+      max-width: 100%;
+      height: auto;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      padding: 5px;
+    }
+
+    .image-wrapper .subcaption {
+      margin-top: 5px;
+      font-size: 14px;
+      font-style: italic;
+    }
+
+    .caption {
+      font-size: 16px;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+
+    .bibtex-section {
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .bibtex-container {
+      background-color: #f9f9f9;
+      padding: 10px;
+      border-radius: 5px;
+    }
+
+    .bibtex-code {
+      font-family: monospace;
+      white-space: pre-wrap;
+    }
+
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1 class="title">PANDA: Priority-Based Collision Avoidance Framework for Heterogeneous UAVs Navigating in Dense Airspace</h1>
+        <div class="authors">
+            <span><a href="https://www.linkedin.com/in/agamdeep-iiser">Agamdeep Singh</span>*</a><span class="comma">,</span>
+            <span><a href="https://www.linkedin.com/in/jaskiratsingh2000">Jaskirat Singh</span>*</a><span class="comma">,</span>
+            <span><a href="https://www.linkedin.com/in/sujit-p-b-49366a3/">Sujit PB</a></span>
+        </div>
+        <div class="institution">Indian Institute of Science Education and Research Bhopal (IISER Bhopal)</div>
+        <div class="conference">International Conference on Autonomous Agents and Multiagent Systems (AAMAS), 2025 (Extended Abstract)</div>
+        <div class="equal-contrib"><sup>*</sup>Equal Contribution</div><br>
+
+        <div class="buttons">
+            <a href="assets/papers/panda_paper.pdf" class="button" target="_blank" rel="noopener noreferrer">
+                <i class="fas fa-file-pdf"></i>
+                PDF
+            </a>
+            <a href="https://github.com/jaskiratsingh2000/Research-PANDA" class="button" target="_blank" rel="noopener noreferrer">
+                <i class="fab fa-github"></i>
+                Code
+            </a>
+            <a href="https://dl.acm.org/doi/10.5555/3709347.3744000" class="button" target="_blank" rel="noopener noreferrer">
+                <i class="fa fa-link"></i>
+                Link
+            </a>
+        </div>
+
+        <div class="item">
+            <img src="assets/images/dense_airspace.png?height=300&width=800" alt="Dense Airspace"style="width: 80%; margin-top: 20px;"/>
+        </div>
+    </header>
+
+    <section class="abstract">
+        <h2 class="section-title">Abstract</h2>
+        <p>With increasing unmanned aerial vehicle (UAV) applications, the airspace is expected to be crowded with heterogeneous (quadrotors, fixed wings and hybrid UAVs) multiple UAVs sharing a dense airspace. In this complex airspace, efficient collision avoidance techniques that respect right-of-way rules are essential. Further, UAVs may have different priorities depending on their tasks e.g. medical, logistics, etc. Due to this coupling of right-of-way with priority, collision avoidance in dense airspace becomes challenging. In this paper, we propose PANDA, a novel potential-field based approach that take addresses these constraints in a unified way. We evaluate PANDA through simulations. PANDA, achieves 21% faster completion time for the highest priority UAVs over a no priority baseline and a 60% faster completion time over the lowest priority UAVs. We compare PANDA to RIPNA algorithm and the results show that PANDA achieves 2X improvement in average completion time.</p>
+    </section>
+
+
+    <section class="method">
+        <h2 class="section-title">Method</h2>
+        <p>PANDA framework is structured into several distinct phases as shown below. Initially, we predict potential collisions between various vehicles by calculating time of collision. If the vehicles are in collision course then the attractive and repulsive forces acting on each vehicle is computed to facilitate collision avoidance maneuvers. Subsequently, we implement velocity clipping to limit the velocity of the vehicle to other vehicles.</p>
+        <img src="assets/images/Method.png?height=300&width=800" alt="Method diagram" style="width: 100%; margin-top: 20px;">
+    </section>
+
+    <section class="results">
+        <h2 class="section-title">Results</h2>
+        <p>Experiments were performed with 4, 8, 12, 16, 20, and 24 UAVs in the 50𝑚 radius airspace. The priority for each UAV was drawn from a normal distribution with 𝜇 = 3 and 𝜎 = 1, which is the representative of a real life situation where most of the UAVs (eg. goods delivery) are of similar priority while a few are of high priority (eg. medical package) and few are of low priority (eg. surveillance). These priorities were then binned into five classes {1, 1 − 2, 2 − 4, 4 − 5, 5¯} with 5¯ representing the highest priority class and 1 representing the least priority. Results were averaged within a class.</p>
+
+
+        <div class="carousel-container">
+            <div class="carousel">
+                <div class="carousel-item">
+                    <img src="assets/images/12_final_simulation.png" alt="PANDA Framework">
+                </div>
+                <div class="carousel-item">
+                    <img src="assets/images/12_final_simulation.png" alt="PANDA Framework">
+                </div>
+                <div class="carousel-item">
+                    <img src="assets/images/12_final_simulation.png" alt="PANDA Framework">
+                </div>
+            </div>
+            <button class="carousel-button prev-button">←</button>
+            <button class="carousel-button next-button">→</button>
+            <div class="slider-dots"></div>
+        </div>
+
+        <div class="dot-navigation"></div>
+
+        <table>
+          <thead>
+            <tr>
+              <th rowspan="2">n</th>
+              <th colspan="6">Completion Time (seconds) <span class="arrow">↓</span></th>
+              <th colspan="6">Mean Minimum Distance (metres) <span class="arrow">↓</span></th>
+            </tr>
+            <tr>
+              <th>without priority</th>
+              <th>&lt; 1</th>
+              <th>1–2</th>
+              <th>2–4</th>
+              <th>4–5</th>
+              <th>5 &lt;</th>
+              <th>without priority</th>
+              <th>&lt; 1</th>
+              <th>1–2</th>
+              <th>2–4</th>
+              <th>4–5</th>
+              <th>5 &lt;</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>4</td>
+              <td>14.86</td>
+              <td>17.05</td>
+              <td>16.80</td>
+              <td>15.17</td>
+              <td>13.84</td>
+              <td>13.79</td>
+              <td>9.38</td>
+              <td>9.23</td>
+              <td>8.99</td>
+              <td>9.31</td>
+              <td>9.44</td>
+              <td>9.36</td>
+            </tr>
+            <tr>
+              <td>8</td>
+              <td>14.62</td>
+              <td>18.32</td>
+              <td>15.37</td>
+              <td>15.15</td>
+              <td>14.57</td>
+              <td>14.75</td>
+              <td>8.10</td>
+              <td>7.83</td>
+              <td>7.72</td>
+              <td>8.15</td>
+              <td>8.44</td>
+              <td>8.00</td>
+            </tr>
+            <tr>
+              <td>12</td>
+              <td>17.20</td>
+              <td>19.76</td>
+              <td>17.92</td>
+              <td>17.06</td>
+              <td>16.40</td>
+              <td>15.67</td>
+              <td>7.77</td>
+              <td>7.86</td>
+              <td>7.71</td>
+              <td>7.80</td>
+              <td>8.27</td>
+              <td>7.36</td>
+            </tr>
+            <tr>
+              <td>16</td>
+              <td>18.66</td>
+              <td>27.28</td>
+              <td>20.15</td>
+              <td>18.34</td>
+              <td>17.97</td>
+              <td>17.64</td>
+              <td>8.30</td>
+              <td>9.90</td>
+              <td>8.27</td>
+              <td>8.37</td>
+              <td>8.36</td>
+              <td>7.33</td>
+            </tr>
+            <tr>
+              <td>20</td>
+              <td>20.09</td>
+              <td>25.86</td>
+              <td>21.83</td>
+              <td>20.34</td>
+              <td>18.39</td>
+              <td>18.55</td>
+              <td>8.69</td>
+              <td>9.72</td>
+              <td>8.49</td>
+              <td>8.66</td>
+              <td>8.39</td>
+              <td>8.69</td>
+            </tr>
+            <tr>
+              <td>24</td>
+              <td>21.84</td>
+              <td>30.73</td>
+              <td>24.61</td>
+              <td>21.91</td>
+              <td>19.80</td>
+              <td>17.15</td>
+              <td>9.15</td>
+              <td>9.85</td>
+              <td>9.53</td>
+              <td>9.40</td>
+              <td>9.30</td>
+              <td>8.86</td>
+            </tr>
+          </tbody>
+          <caption>Table 2: Mission completion time and mean minimum distance of all priority classes for different number of UAVs(n) compared
+to the no priority case(w/o p)</caption>
+        </table>
+
+        <div class="image-container">
+            <div class="image-wrapper">
+              <img src="assets/images/time_top_2.jpg" alt="Time of competition">
+              <div class="subcaption">(a) Time of competition</div>
+            </div>
+            <div class="image-wrapper">
+              <img src="assets/images/space_top_2.jpg" alt="Average min space">
+              <div class="subcaption">(b) Average min space</div>
+            </div>
+          </div>
+          <div class="caption">
+            Figure 7: Effect on mission completion time and mean minimum distance due to priority assignment as number of UAVs increase.
+          </div> <br><br>
+
+          <div class="image-container">
+            <div class="image-wrapper">
+              <img src="assets/images/new_completion_time_bar.jpg" alt="completion time">
+              <div class="subcaption">(a) Completion time</div>
+            </div>
+            <div class="image-wrapper">
+              <img src="assets/images/new_space_bar.jpg" alt="Mean minimum space">
+              <div class="subcaption">(b) Mean minimum space</div>
+            </div>
+          </div>
+          <div class="caption">
+            Figure 8: Variation in completion time and avg min space across different priority classes.
+          </div>
+    </section>
+
+    <section class="bibtex-section">
+        <h2 class="section-title">BibTeX</h2>
+        <div class="bibtex-container">
+            <pre class="bibtex-code">@inproceedings{
+            anonymous2024panda,
+            title={{PANDA}: Priority-Based Collision Avoidance Framework for Heterogeneous {UAV}s Navigating in Dense Airspace},
+            author={Anonymous},
+            booktitle={The 24th International Conference on Autonomous Agents and Multi-Agent Systems},
+            year={2024},
+            url={https://openreview.net/forum?id=xvjhNcgcg4}}</pre>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <p>This website is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License.</p>
+    </footer>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const carousel = document.querySelector('.carousel');
+            const items = document.querySelectorAll('.carousel-item');
+            const prevButton = document.querySelector('.prev-button');
+            const nextButton = document.querySelector('.next-button');
+            const dotNavigation = document.querySelector('.dot-navigation');
+            const sliderDots = document.querySelector('.slider-dots');
+            
+            let currentIndex = 0;
+            const totalItems = items.length;
+
+            // Create dot navigation
+            items.forEach((_, index) => {
+                const dot = document.createElement('span');
+                dot.classList.add('dot');
+                dot.addEventListener('click', () => {
+                    currentIndex = index;
+                    updateCarousel();
+                });
+                dotNavigation.appendChild(dot);
+
+                // Create slider dots
+                const sliderDot = document.createElement('span');
+                sliderDot.classList.add('slider-dot');
+                sliderDots.appendChild(sliderDot);
+            });
+
+            const dots = document.querySelectorAll('.dot');
+            const sliderDotElements = document.querySelectorAll('.slider-dot');
+
+            function updateCarousel() {
+                carousel.style.transform = `translateX(-${currentIndex * 100}%)`;
+                dots.forEach((dot, index) => {
+                    dot.classList.toggle('active', index === currentIndex);
+                });
+                sliderDotElements.forEach((dot, index) => {
+                    dot.classList.toggle('active', index === currentIndex);
+                });
+            }
+
+            prevButton.addEventListener('click', () => {
+                currentIndex = (currentIndex - 1 + totalItems) % totalItems;
+                updateCarousel();
+            });
+
+            nextButton.addEventListener('click', () => {
+                currentIndex = (currentIndex + 1) % totalItems;
+                updateCarousel();
+            });
+
+            // Optional: Add keyboard navigation
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowLeft') {
+                    currentIndex = (currentIndex - 1 + totalItems) % totalItems;
+                    updateCarousel();
+                } else if (e.key === 'ArrowRight') {
+                    currentIndex = (currentIndex + 1) % totalItems;
+                    updateCarousel();
+                }
+            });
+
+            // Initialize carousel
+            updateCarousel();
+        });
+    </script>
+</body>
+</html>
